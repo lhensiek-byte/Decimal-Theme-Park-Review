@@ -1,0 +1,314 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta http-equiv="Content-Style-Type" content="text/css">
+  <title></title>
+  <meta name="Generator" content="Cocoa HTML Writer">
+  <meta name="CocoaVersion" content="2575.7">
+  <style type="text/css">
+    p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+    p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+  </style>
+</head>
+<body>
+<p class="p1">&lt;!DOCTYPE html&gt;</p>
+<p class="p1">&lt;html lang="en"&gt;</p>
+<p class="p1">&lt;head&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;meta charset="UTF-8"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;title&gt;Decimals Delight - Park Manager&lt;/title&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;script src="https://cdn.tailwindcss.com"&gt;&lt;/script&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;script src="https://cdn.jsdelivr.net/npm/chart.js"&gt;&lt;/script&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;link rel="preconnect" href="https://fonts.googleapis.com"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;link rel="preconnect" href="https://fonts.gstatic.com" crossorigin&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&amp;display=swap" rel="stylesheet"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;!-- Chosen Palette: Playful Carnival --&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;!-- Application Structure Plan: A single-page dashboard application with tab-based navigation for different park areas (Dashboard, Tickets, Shops, Arcade, Maintenance). This structure is intuitive for students as it mirrors the thematic sections of the source handbook. The core interaction involves solving math problems in interactive cards, receiving immediate feedback, and seeing a central budget tracker update in real-time. This gamified approach enhances engagement and makes the abstract concept of budget management tangible and interactive. --&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;!-- Visualization &amp; Content Choices: Main budget displayed as a large dynamic number. A Chart.js doughnut chart will visualize the initial budget vs. money spent, updating with each completed expense task. Goal: Provide a clear, at-a-glance visual summary of financial status. Problems are presented as text in cards with number inputs and check buttons. Goal: Test decimal calculation skills. Interaction: User input and button click trigger instant validation and visual feedback (correct/incorrect messages). Justification: This interactive format is more engaging for 6th graders than a static worksheet. Library: Chart.js (Canvas). CONFIRMING NO SVG/Mermaid. --&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. --&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;style&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>body {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>font-family: 'Poppins', sans-serif;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p1"><span class="Apple-converted-space">        </span>.task-card {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>transition: all 0.3s ease-in-out;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p1"><span class="Apple-converted-space">        </span>.nav-item.active {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>background-color: #fbbf24;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>color: #1f2937;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p1"><span class="Apple-converted-space">        </span>.feedback {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>transition: opacity 0.5s;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p1"><span class="Apple-converted-space">        </span>.chart-container {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>position: relative;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>width: 100%;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>max-width: 400px;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>margin-left: auto;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>margin-right: auto;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>height: 300px;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>max-height: 400px;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p1"><span class="Apple-converted-space">        </span>@media (min-width: 768px) {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>.chart-container {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>height: 350px;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>}</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;/style&gt;</p>
+<p class="p1">&lt;/head&gt;</p>
+<p class="p1">&lt;body class="bg-amber-50 text-gray-800"&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="container mx-auto p-4 md:p-8"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;header class="text-center mb-8"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;h1 class="text-4xl md:text-5xl font-bold text-amber-600"&gt;Decimals Delight Theme Park&lt;/h1&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;p class="text-lg text-gray-600 mt-2"&gt;Your Park Manager Dashboard&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;/header&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;nav class="flex flex-wrap justify-center gap-2 md:gap-4 mb-8"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;button data-section="dashboard" class="nav-item active font-semibold py-2 px-4 rounded-full bg-white shadow-md hover:bg-amber-200 transition"&gt;📊 Dashboard&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;button data-section="ticket-booth" class="nav-item font-semibold py-2 px-4 rounded-full bg-white shadow-md hover:bg-amber-200 transition"&gt;🎟️ Ticket Booth&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;button data-section="shops" class="nav-item font-semibold py-2 px-4 rounded-full bg-white shadow-md hover:bg-amber-200 transition"&gt;🍿 Shops&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;button data-section="arcade" class="nav-item font-semibold py-2 px-4 rounded-full bg-white shadow-md hover:bg-amber-200 transition"&gt;🕹️ Arcade&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;button data-section="maintenance" class="nav-item font-semibold py-2 px-4 rounded-full bg-white shadow-md hover:bg-amber-200 transition"&gt;🎢 Maintenance&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;/nav&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;main id="app-content"&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;section id="dashboard" class="content-section"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;div class="bg-white p-6 rounded-2xl shadow-lg text-center"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;h2 class="text-2xl font-bold mb-4 text-amber-700"&gt;Manager's Office&lt;/h2&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                     </span>&lt;p class="text-gray-600 mb-6"&gt;Welcome, Manager! Your job is to make sure our park runs smoothly and stays within budget. Track your funds, complete tasks in each park area, and see your financial skills in action!&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;div class="grid md:grid-cols-2 gap-8 items-center"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;h3 class="text-xl font-semibold text-gray-700"&gt;Current Park Budget&lt;/h3&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;p id="budget-display" class="text-5xl font-bold text-green-600 my-4"&gt;$1,500.00&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;div class="w-full bg-gray-200 rounded-full h-4"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                </span>&lt;div id="budget-bar" class="bg-green-500 h-4 rounded-full" style="width: 100%"&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;p class="text-sm text-gray-500 mt-2"&gt;Initial Budget: $1,500.00&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;div class="chart-container"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                             </span>&lt;h3 class="text-xl font-semibold text-gray-700 mb-4"&gt;Budget Overview&lt;/h3&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;canvas id="budgetChart"&gt;&lt;/canvas&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                     </span>&lt;div class="mt-8"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;h3 class="text-xl font-semibold text-gray-700"&gt;Task Progress&lt;/h3&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;p id="progress-text" class="text-gray-600 mt-2"&gt;Complete tasks in the other sections to see your progress!&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;div id="task-checklist" class="flex flex-wrap justify-center gap-4 mt-4"&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;/section&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;section id="ticket-booth" class="content-section hidden"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;div class="bg-white p-6 rounded-2xl shadow-lg"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;h2 class="text-2xl font-bold mb-1 text-center text-amber-700"&gt;🎟️ Ticket Booth Tasks&lt;/h2&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;p class="text-center text-gray-600 mb-6"&gt;Calculate the income from ticket sales. Revenue you earn here will be added to your budget!&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;div id="tasks-ticket-booth" class="space-y-6"&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;/section&gt;</p>
+<p class="p2"><span class="Apple-converted-space">            </span></p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;section id="shops" class="content-section hidden"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;div class="bg-white p-6 rounded-2xl shadow-lg"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;h2 class="text-2xl font-bold mb-1 text-center text-amber-700"&gt;🍿 Snack &amp; Souvenir Shops Tasks&lt;/h2&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                     </span>&lt;p class="text-center text-gray-600 mb-6"&gt;Figure out the total sales from our popular food and merchandise items. This income boosts your park's budget.&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;div id="tasks-shops" class="space-y-6"&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;/section&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;section id="arcade" class="content-section hidden"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                 </span>&lt;div class="bg-white p-6 rounded-2xl shadow-lg"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;h2 class="text-2xl font-bold mb-1 text-center text-amber-700"&gt;🕹️ Arcade Tasks&lt;/h2&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;p class="text-center text-gray-600 mb-6"&gt;The arcade is a big hit! Calculate prize costs and total games played. Some of these will be expenses that come out of your budget.&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;div id="tasks-arcade" class="space-y-6"&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;/section&gt;</p>
+<p class="p2"><span class="Apple-converted-space">            </span></p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;section id="maintenance" class="content-section hidden"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;div class="bg-white p-6 rounded-2xl shadow-lg"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;h2 class="text-2xl font-bold mb-1 text-center text-amber-700"&gt;🎢 Park Maintenance &amp; Upgrades&lt;/h2&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;p class="text-center text-gray-600 mb-6"&gt;Keeping the rides safe and exciting costs money. Calculate these expenses, which will be deducted from your budget.&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;div id="tasks-maintenance" class="space-y-6"&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;/section&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;/main&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;script&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>document.addEventListener('DOMContentLoaded', function () {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const initialBudget = 1500.00;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>let currentBudget = initialBudget;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>const tasks = [</p>
+<p class="p1"><span class="Apple-converted-space">                </span>{ id: 1, section: 'ticket-booth', type: 'revenue', question: 'A family of two adults and three children buys tickets. What is their total cost? (Adult: $28.50, Child: $18.75)', answer: 113.25 },</p>
+<p class="p1"><span class="Apple-converted-space">                </span>{ id: 2, section: 'ticket-booth', type: 'revenue', question: 'A school group with 20 students and 3 teachers arrives. What is the total revenue from their tickets? (Student: $25.50, Teacher discount: $18.50)', answer: 565.50 },</p>
+<p class="p1"><span class="Apple-converted-space">                </span>{ id: 3, section: 'ticket-booth', type: 'calculation', question: 'At the end of the day, you count $854.75 in the cash register. At the start of the day, you had $150.25. How much money did you make in ticket sales today?', answer: 704.50 },</p>
+<p class="p1"><span class="Apple-converted-space">                </span>{ id: 4, section: 'shops', type: 'revenue', question: 'A vendor sold 50 small sodas ($2.50 each) and 35 bags of popcorn ($3.75 each). How much money did they make in total?', answer: 256.25 },</p>
+<p class="p1"><span class="Apple-converted-space">                </span>{ id: 5, section: 'shops', type: 'calculation', question: 'A company wants to buy 15 theme park hats for their employees at $12.50 each. What is the total cost?', answer: 187.50 },</p>
+<p class="p1"><span class="Apple-converted-space">                </span>{ id: 6, section: 'shops', type: 'revenue', question: 'A tour group buys 12 hot dogs ($4.25 each) and 12 cotton candies ($5.25 each). What is the total bill?', answer: 114.00 },</p>
+<p class="p1"><span class="Apple-converted-space">                </span>{ id: 7, section: 'arcade', type: 'expense', question: 'You have a budget of $200.00 to buy large stuffed animals for prizes. Each costs $12.50. How many can you buy?', answer: 16, effect: -200.00, isPurchase: true },</p>
+<p class="p1"><span class="Apple-converted-space">                </span>{ id: 8, section: 'arcade', type: 'calculation', question: 'A prize chest worth $136.50 is filled with small toys. If each toy is worth $4.75, how many small toys are in the chest? (Round to the nearest whole number if necessary)', answer: 29 },</p>
+<p class="p1"><span class="Apple-converted-space">                </span>{ id: 9, section: 'arcade', type: 'calculation', question: 'The arcade made $3,250.25 in one week. If each game play costs $0.75, how many games were played?', answer: 4333.67, allowRange: 0.01 },</p>
+<p class="p1"><span class="Apple-converted-space">                </span>{ id: 10, section: 'maintenance', type: 'expense', question: 'You must pay for a Roller Coaster Maintenance check-up costing $125.75. How much will your budget decrease?', answer: 125.75, effect: -125.75 },</p>
+<p class="p1"><span class="Apple-converted-space">                </span>{ id: 11, section: 'maintenance', type: 'calculation', question: 'The cost of upgrading one Ferris Wheel is $89.50. How much would it cost to upgrade two Ferris Wheels in the park?', answer: 179.00 },</p>
+<p class="p1"><span class="Apple-converted-space">                </span>{ id: 12, section: 'maintenance', type: 'expense', question: "The park's profit for the day is $750.75. To ensure the arcade machines work well, you spend $45.50 on each of the 5 machines. How much do you spend in total?", answer: 227.50, effect: -227.50 }</p>
+<p class="p1"><span class="Apple-converted-space">            </span>];</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>const completedTasks = new Set();</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>const budgetDisplay = document.getElementById('budget-display');</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const budgetBar = document.getElementById('budget-bar');</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const navItems = document.querySelectorAll('.nav-item');</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const contentSections = document.querySelectorAll('.content-section');</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const taskChecklist = document.getElementById('task-checklist');</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const progressText = document.getElementById('progress-text');</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>function formatCurrency(amount) {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(amount);</p>
+<p class="p1"><span class="Apple-converted-space">            </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>function updateBudgetDisplay() {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>budgetDisplay.textContent = formatCurrency(currentBudget);</p>
+<p class="p1"><span class="Apple-converted-space">                </span>const percentage = Math.max(0, (currentBudget / initialBudget) * 100);</p>
+<p class="p1"><span class="Apple-converted-space">                </span>budgetBar.style.width = `${percentage}%`;</p>
+<p class="p2"><span class="Apple-converted-space">                </span></p>
+<p class="p1"><span class="Apple-converted-space">                </span>if (percentage &lt; 25) budgetBar.classList.replace('bg-green-500', 'bg-red-500');</p>
+<p class="p1"><span class="Apple-converted-space">                </span>else if (percentage &lt; 50) budgetBar.classList.replace('bg-green-500', 'bg-yellow-500');</p>
+<p class="p2"><span class="Apple-converted-space">                </span></p>
+<p class="p1"><span class="Apple-converted-space">                </span>updateChart();</p>
+<p class="p1"><span class="Apple-converted-space">            </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>let budgetChart;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>function setupChart() {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>const ctx = document.getElementById('budgetChart').getContext('2d');</p>
+<p class="p1"><span class="Apple-converted-space">                </span>budgetChart = new Chart(ctx, {</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>type: 'doughnut',</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>data: {</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>labels: ['Remaining Budget', 'Money Spent/Allocated'],</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>datasets: [{</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>data: [currentBudget, initialBudget - currentBudget],</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>backgroundColor: ['#22c55e', '#ef4444'],</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>borderColor: ['#ffffff', '#ffffff'],</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>borderWidth: 4</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>}]</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>},</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>options: {</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>responsive: true,</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>maintainAspectRatio: false,</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>plugins: {</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>legend: {</p>
+<p class="p1"><span class="Apple-converted-space">                                </span>position: 'bottom',</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>},</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>tooltip: {</p>
+<p class="p1"><span class="Apple-converted-space">                                </span>callbacks: {</p>
+<p class="p1"><span class="Apple-converted-space">                                    </span>label: function(context) {</p>
+<p class="p1"><span class="Apple-converted-space">                                        </span>return `${context.label}: ${formatCurrency(context.raw)}`;</p>
+<p class="p1"><span class="Apple-converted-space">                                    </span>}</p>
+<p class="p1"><span class="Apple-converted-space">                                </span>}</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>}</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>}</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>}</p>
+<p class="p1"><span class="Apple-converted-space">                </span>});</p>
+<p class="p1"><span class="Apple-converted-space">            </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>function updateChart() {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>const spent = Math.max(0, initialBudget - currentBudget);</p>
+<p class="p1"><span class="Apple-converted-space">                </span>budgetChart.data.datasets[0].data = [currentBudget, spent];</p>
+<p class="p1"><span class="Apple-converted-space">                </span>budgetChart.update();</p>
+<p class="p1"><span class="Apple-converted-space">            </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>function renderTasks() {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>tasks.forEach(task =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>const container = document.getElementById(`tasks-${task.section}`);</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>const card = document.createElement('div');</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>card.className = 'task-card bg-amber-50 p-4 rounded-xl border border-amber-200';</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>card.innerHTML = `</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;p class="font-semibold text-gray-700 mb-2"&gt;Task ${task.id}: ${task.question}&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;div class="flex flex-col sm:flex-row items-center gap-2 mt-2"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;input type="number" id="answer-${task.id}" class="w-full sm:w-auto flex-grow p-2 border border-gray-300 rounded-lg" placeholder="Your Answer"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;button data-task-id="${task.id}" class="check-answer-btn w-full sm:w-auto bg-amber-500 text-white font-bold py-2 px-4 rounded-lg hover:bg-amber-600 transition"&gt;Check Answer&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;p id="feedback-${task.id}" class="feedback text-sm mt-2 opacity-0 h-4"&gt;&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>`;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>container.appendChild(card);</p>
+<p class="p2"><span class="Apple-converted-space">                    </span></p>
+<p class="p1"><span class="Apple-converted-space">                    </span>const checkmark = document.createElement('div');</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>checkmark.id = `checklist-${task.id}`;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>checkmark.className = 'w-8 h-8 rounded-full bg-gray-300 flex items-center justify-center text-white font-bold text-sm';</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>checkmark.textContent = task.id;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>taskChecklist.appendChild(checkmark);</p>
+<p class="p1"><span class="Apple-converted-space">                </span>});</p>
+<p class="p1"><span class="Apple-converted-space">            </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>function handleNavigation(e) {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>const targetSection = e.target.dataset.section;</p>
+<p class="p2"><span class="Apple-converted-space">                </span></p>
+<p class="p1"><span class="Apple-converted-space">                </span>contentSections.forEach(section =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>section.classList.toggle('hidden', section.id !== targetSection);</p>
+<p class="p1"><span class="Apple-converted-space">                </span>});</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">                </span>navItems.forEach(item =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>item.classList.toggle('active', item.dataset.section === targetSection);</p>
+<p class="p1"><span class="Apple-converted-space">                </span>});</p>
+<p class="p1"><span class="Apple-converted-space">            </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>function handleAnswerCheck(e) {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>if (!e.target.classList.contains('check-answer-btn')) return;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">                </span>const taskId = parseInt(e.target.dataset.taskId, 10);</p>
+<p class="p1"><span class="Apple-converted-space">                </span>const task = tasks.find(t =&gt; t.id === taskId);</p>
+<p class="p1"><span class="Apple-converted-space">                </span>const input = document.getElementById(`answer-${task.id}`);</p>
+<p class="p1"><span class="Apple-converted-space">                </span>const feedback = document.getElementById(`feedback-${task.id}`);</p>
+<p class="p1"><span class="Apple-converted-space">                </span>const userAnswer = parseFloat(input.value);</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">                </span>if (isNaN(userAnswer)) {</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>feedback.textContent = 'Please enter a valid number.';</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>feedback.className = 'feedback text-sm mt-2 text-red-600 opacity-100 h-4';</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>return;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">                </span>const isCorrect = task.allowRange ? Math.abs(userAnswer - task.answer) &lt;= task.allowRange : userAnswer === task.answer;</p>
+<p class="p2"><span class="Apple-converted-space">                </span></p>
+<p class="p1"><span class="Apple-converted-space">                </span>if (isCorrect) {</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>if (!completedTasks.has(taskId)) {</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>if (task.type === 'revenue') {</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>currentBudget += task.answer;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>} else if (task.type === 'expense') {</p>
+<p class="p1"><span class="Apple-converted-space">                             </span>currentBudget += task.effect;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>}</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>updateBudgetDisplay();</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>completedTasks.add(taskId);</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>}</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>feedback.textContent = 'Correct! Great job!';</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>feedback.className = 'feedback text-sm mt-2 text-green-600 opacity-100 h-4';</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>e.target.disabled = true;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>input.disabled = true;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>e.target.classList.replace('bg-amber-500', 'bg-green-500');</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>e.target.textContent = '✓ Completed';</p>
+<p class="p2"><span class="Apple-converted-space">                    </span></p>
+<p class="p1"><span class="Apple-converted-space">                    </span>const checkmark = document.getElementById(`checklist-${task.id}`);</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>checkmark.classList.replace('bg-gray-300', 'bg-green-500');</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>checkmark.textContent = '✓';</p>
+<p class="p2"><span class="Apple-converted-space">                    </span></p>
+<p class="p1"><span class="Apple-converted-space">                    </span>progressText.textContent = `You've completed ${completedTasks.size} out of ${tasks.length} tasks!`;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">                </span>} else {</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>feedback.textContent = 'Not quite, try again! Check your calculations.';</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>feedback.className = 'feedback text-sm mt-2 text-red-600 opacity-100 h-4';</p>
+<p class="p1"><span class="Apple-converted-space">                </span>}</p>
+<p class="p1"><span class="Apple-converted-space">            </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>navItems.forEach(item =&gt; item.addEventListener('click', handleNavigation));</p>
+<p class="p1"><span class="Apple-converted-space">            </span>document.getElementById('app-content').addEventListener('click', handleAnswerCheck);</p>
+<p class="p2"><span class="Apple-converted-space">            </span></p>
+<p class="p1"><span class="Apple-converted-space">            </span>renderTasks();</p>
+<p class="p1"><span class="Apple-converted-space">            </span>setupChart();</p>
+<p class="p1"><span class="Apple-converted-space">            </span>updateBudgetDisplay();</p>
+<p class="p1"><span class="Apple-converted-space">        </span>});</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;/script&gt;</p>
+<p class="p1">&lt;/body&gt;</p>
+<p class="p1">&lt;/html&gt;</p>
+</body>
+</html>
